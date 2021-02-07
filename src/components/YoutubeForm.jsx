@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { Formik, Form, Field, ErrorMessage, FieldArray } from 'formik';
 import *  as Yup from 'yup';
 import TextError from './TextError';
@@ -9,6 +9,20 @@ const initialValues = {
     channel: '',
     comments: '',
     address: '',
+    social: {
+        facebook: '',
+        twitter: ''
+    },
+    phoneNumbers: ['', ''],
+    phNumbers: ['']
+}
+
+const savedlValues = {
+    name: 'Sinan',
+    email: 'sinan95@gmail.com',
+    channel: 'sinan95',
+    comments: 'Welcome to Formik',
+    address: 'Istanbul, Turkey',
     social: {
         facebook: '',
         twitter: ''
@@ -41,14 +55,17 @@ const validateComments = value => {
 }
 
 function YoutubeForm() {
+    const [formValues, setFormValues] = useState(null);
+
     return (
         <Formik
-            initialValues={initialValues}
+            initialValues={formValues || initialValues}
             validationSchema={validationSchema}
             onSubmit={onSubmit}
-            validateOnChange={false}
-            validateOnBlur={false}
-            validateOnMount
+            enableReinitialize
+            // validateOnChange={false}
+            // validateOnBlur={false}
+            // validateOnMount
         >
             {
                 formik => {
@@ -163,6 +180,7 @@ function YoutubeForm() {
                             <button type="button" onClick={() => formik.validateForm()}>Validate all</button>
                             <button type="button" onClick={() => formik.setFieldTouched('comments')}>Visit comments</button>
                             <button type="button" onClick={() => formik.setTouched({name: true, email: true, channel: true, comments: true})}>Visit fields</button>
+                            <button type="button" onClick={() => setFormValues(savedlValues)}>Load saved data</button>
                             <button type="submit" disabled={!formik.isValid || formik.isSubmitting}>Submit</button>
                         </Form>
                     )
