@@ -17,8 +17,10 @@ const initialValues = {
     phNumbers: ['']
 }
   
-const onSubmit = values => {
-    console.log('Form data', values)
+const onSubmit = (values, onSubmitProps) => {
+    console.log('Form data', values);
+    console.log('submit props', onSubmitProps);
+    onSubmitProps.setSubmitting(false);
 }
 
 const validationSchema = Yup.object({
@@ -46,6 +48,7 @@ function YoutubeForm() {
             onSubmit={onSubmit}
             validateOnChange={false}
             validateOnBlur={false}
+            validateOnMount
         >
             {
                 formik => {
@@ -160,7 +163,7 @@ function YoutubeForm() {
                             <button type="button" onClick={() => formik.validateForm()}>Validate all</button>
                             <button type="button" onClick={() => formik.setFieldTouched('comments')}>Visit comments</button>
                             <button type="button" onClick={() => formik.setTouched({name: true, email: true, channel: true, comments: true})}>Visit fields</button>
-                            <button type="submit">Submit</button>
+                            <button type="submit" disabled={!formik.isValid || formik.isSubmitting}>Submit</button>
                         </Form>
                     )
                 }
